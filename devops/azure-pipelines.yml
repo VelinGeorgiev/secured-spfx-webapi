@@ -40,7 +40,7 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(build.artifactStagingDirectory)/api' 
-        artifactName: 'PnP.IceCreamShop.WebApi' 
+        artifactName: 'PnPIceCreamShopWebApi' 
       displayName: 'Publish the PnP.IceCreamShop Web API'
   
   - job: SPFX_BuildnDeploy
