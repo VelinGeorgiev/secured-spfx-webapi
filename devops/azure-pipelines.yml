@@ -7,35 +7,35 @@ trigger:
 - master
 - dotnetapi
 
-pool:
-  vmImage: 'windows-latest'
+jobs:
+- job: Release_Scripts
+  pool:
+    vmImage: 'windows-latest'
+  variables:
+    solution: '**/*.sln'
+    buildPlatform: 'Any CPU'
+    buildConfiguration: 'Release'
+  steps:
+  - task: NuGetToolInstaller@0
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '$(solution)'
 
-steps:
-- task: NuGetToolInstaller@0
+  - task: VSBuild@1
+    inputs:
+      solution: '$(solution)'
+      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)/api"'
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+  - task: VSTest@2
+    inputs:
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)/api"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(build.artifactStagingDirectory)/api' 
-    artifactName: 'PnP.IceCreamShop.WebApi' 
-  displayName: 'Publish the PnP.IceCreamShop Web API'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(build.artifactStagingDirectory)/api' 
+      artifactName: 'PnP.IceCreamShop.WebApi' 
+    displayName: 'Publish the PnP.IceCreamShop Web API'
