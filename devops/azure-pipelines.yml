@@ -95,7 +95,7 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Enterprise (86cecb91-3226-4104-8fbd-f08b4262fb4a)'
               WebAppName: PnPIceCreamShop
-              packageForLinux: '$(System.DefaultWorkingDirectory)/PnPIceCreamShopWebApi/PnP.IceCreamShop.zip'
+              packageForLinux: './PnPIceCreamShopWebApi/PnP.IceCreamShop.zip'
   - deployment: SPFx
     displayName: SPFx
     pool:
@@ -115,5 +115,5 @@ stages:
             displayName: 'Bash Script'
             inputs:
               targetType: filePath
-              filePath: '$(System.DefaultWorkingDirectory)/Office365CLIReleaseScripts/office365-CLI-deploy-app.sh'
+              filePath: './Office365CLIReleaseScripts/office365-CLI-deploy-app.sh'
               arguments: '$(site) $(email) $(pass) $(scope)'
