@@ -4,7 +4,7 @@ EMAIL=$2
 PASS=$3
 SCOPE=$4
 
-npm i -g @pnp/office365-cli
+sudo npm i -g @pnp/office365-cli
 
 # You have to run "o365 spo login https://contoso.sharepoint.com"
 # to agree with the consent first time
