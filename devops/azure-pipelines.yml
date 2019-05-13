@@ -87,6 +87,9 @@ stages:
         deploy:
           steps:
           - script: echo $(System.DefaultWorkingDirectory)
+          - script: echo $(Build.SourcesDirectory)
+          - script: echo $(build.artifactStagingDirectory)
+          - script: ls
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: PnPIceCreamShop '
             inputs:
