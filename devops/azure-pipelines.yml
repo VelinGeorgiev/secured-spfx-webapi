@@ -39,7 +39,7 @@ stages:
   
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(build.artifactStagingDirectory)/api' 
+        pathtoPublish: '$(build.artifactStagingDirectory)/api/PnP.IceCreamShop.zip' 
         artifactName: 'drop' 
       displayName: 'Publish the PnP.IceCreamShop Web API'
   

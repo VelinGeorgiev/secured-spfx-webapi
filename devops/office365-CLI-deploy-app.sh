@@ -11,6 +11,6 @@ sudo npm i -g @pnp/office365-cli
 
 o365 spo login $SITE --authType password --userName $EMAIL --password $PASS
 
-o365 spo app add --filePath "./react-aadhttpclient.sppkg" --appCatalogUrl $SITE --scope $SCOPE --overwrite
+o365 spo app add --filePath "../drop/react-aadhttpclient.sppkg" --appCatalogUrl $SITE --scope $SCOPE --overwrite
 
 o365 spo app deploy --name react-aadhttpclient.sppkg --appCatalogUrl $SITE --scope $SCOPE --skipFeatureDeployment
