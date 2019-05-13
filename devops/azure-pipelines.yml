@@ -59,3 +59,13 @@ jobs:
         pathtoPublish: '$(Build.SourcesDirectory)/sharepoint/solution/react-aadhttpclient.sppkg' 
         artifactName: 'PnPIceCreamShopWebPart' 
       displayName: 'Publish SPFx solution'
+
+- job: O365_Scripts
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/devops/release/' 
+        artifactName: 'Release-scripts' 
+      displayName: 'Publish release scripts'
