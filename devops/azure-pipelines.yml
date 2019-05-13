@@ -8,7 +8,7 @@ trigger:
 - dotnetapi
 
 jobs:
-- job: Release_Scripts
+- job: API_Build
   pool:
     vmImage: 'windows-latest'
   variables:
@@ -39,3 +39,23 @@ jobs:
       pathtoPublish: '$(build.artifactStagingDirectory)/api' 
       artifactName: 'PnP.IceCreamShop.WebApi' 
     displayName: 'Publish the PnP.IceCreamShop Web API'
+
+- job: SPFX_Build
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '8.x'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm i
+        gulp bundle --ship
+        gulp package-solution --ship
+      displayName: 'Build DEV package'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/sharepoint/solution/react-app-settings.sppkg' 
+        artifactName: 'PnPIceCreamShopWebPart' 
+      displayName: 'Publish SPFx solution'
