@@ -40,7 +40,7 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(build.artifactStagingDirectory)/api' 
-        artifactName: 'PnPIceCreamShopWebApi' 
+        artifactName: 'drop' 
       displayName: 'Publish the PnP.IceCreamShop Web API'
   
   - job: SPFx
@@ -61,7 +61,7 @@ stages:
       - task: PublishBuildArtifacts@1
         inputs:
           pathtoPublish: '$(Build.SourcesDirectory)/spfx/sharepoint/solution/react-aadhttpclient.sppkg' 
-          artifactName: 'PnPIceCreamShopSPPKG' 
+          artifactName: 'drop' 
         displayName: 'Publish SPFx solution'
   
   - job: O365_Scripts
@@ -71,7 +71,7 @@ stages:
       - task: PublishBuildArtifacts@1
         inputs:
           pathtoPublish: '$(Build.SourcesDirectory)/devops/office365-CLI-deploy-app.sh' 
-          artifactName: 'Office365CLIReleaseScripts' 
+          artifactName: 'drop' 
         displayName: 'Publish o365 CLI scripts'
 
 - stage: Deploy
@@ -86,34 +86,29 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: echo $(System.DefaultWorkingDirectory)
-          - script: echo $(Build.SourcesDirectory)
-          - script: echo $(build.artifactStagingDirectory)
-          - script: ls
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: PnPIceCreamShop '
             inputs:
               azureSubscription: 'Visual Studio Enterprise (86cecb91-3226-4104-8fbd-f08b4262fb4a)'
               WebAppName: PnPIceCreamShop
-              packageForLinux: '../PnPIceCreamShopWebApi/PnP.IceCreamShop.zip'
+              packageForLinux: '../drop/PnP.IceCreamShop.zip'
   - deployment: SPFx
     displayName: SPFx
     pool:
       vmImage: Ubuntu-16.04
     environment: staging
+    #Your build pipeline references a secret variable named ‘pass’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+    variables:
+      site: 'https://velingeorgiev.sharepoint.com/sites/aad'
+      email: 'me@velingeorgiev.onmicrosoft.com'
+      scope: 'sitecollection'
     strategy:
       runOnce:
         deploy:
-          #Your build pipeline references a secret variable named ‘pass’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
-          variables:
-            site: 'https://velingeorgiev.sharepoint.com/sites/aad'
-            email: 'me@velingeorgiev.onmicrosoft.com'
-            scope: 'sitecollection'
-
           steps:
           - task: Bash@3
             displayName: 'Bash Script'
             inputs:
               targetType: filePath
-              filePath: '../Office365CLIReleaseScripts/office365-CLI-deploy-app.sh'
+              filePath: '../drop/office365-CLI-deploy-app.sh'
               arguments: '$(site) $(email) $(pass) $(scope)'
