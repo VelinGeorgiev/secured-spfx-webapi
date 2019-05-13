@@ -7,66 +7,84 @@ trigger:
 - master
 - dotnetapi
 
-jobs:
-- job: API_Build
-  pool:
-    vmImage: 'windows-latest'
-  variables:
-    solution: '**/*.sln'
-    buildPlatform: 'Any CPU'
-    buildConfiguration: 'Release'
-  steps:
-  - task: NuGetToolInstaller@0
-
-  - task: NuGetCommand@2
-    inputs:
-      restoreSolution: '$(solution)'
-
-  - task: VSBuild@1
-    inputs:
-      solution: '$(solution)'
-      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)/api"'
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
-
-  - task: VSTest@2
-    inputs:
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(build.artifactStagingDirectory)/api' 
-      artifactName: 'PnP.IceCreamShop.WebApi' 
-    displayName: 'Publish the PnP.IceCreamShop Web API'
-
-- job: SPFX_Build
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  steps:
-    - task: NodeTool@0
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: API_BuildnDeploy
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      solution: '**/*.sln'
+      buildPlatform: 'Any CPU'
+      buildConfiguration: 'Release'
+    steps:
+    - task: NuGetToolInstaller@0
+  
+    - task: NuGetCommand@2
       inputs:
-        versionSpec: '8.x'
-      displayName: 'Install Node.js'
-
-    - script: |
-        cd spfx
-        npm ci
-        gulp bundle --ship
-        gulp package-solution --ship
-      displayName: 'Build DEV package'
+        restoreSolution: '$(solution)'
+  
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)/api"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+  
+    - task: VSTest@2
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+  
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/spfx/sharepoint/solution/react-aadhttpclient.sppkg' 
-        artifactName: 'PnPIceCreamShopSPPKG' 
-      displayName: 'Publish SPFx solution'
+        pathtoPublish: '$(build.artifactStagingDirectory)/api' 
+        artifactName: 'PnP.IceCreamShop.WebApi' 
+      displayName: 'Publish the PnP.IceCreamShop Web API'
+  
+  - job: SPFX_BuildnDeploy
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '8.x'
+        displayName: 'Install Node.js'
+  
+      - script: |
+          cd spfx
+          npm ci
+          gulp bundle --ship
+          gulp package-solution --ship
+        displayName: 'Build DEV package'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(Build.SourcesDirectory)/spfx/sharepoint/solution/react-aadhttpclient.sppkg' 
+          artifactName: 'PnPIceCreamShopSPPKG' 
+        displayName: 'Publish SPFx solution'
+  
+  - job: O365_Scripts
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(Build.SourcesDirectory)/devops/office365-CLI-deploy-app.sh' 
+          artifactName: 'Office365CLIReleaseScripts' 
+        displayName: 'Publish o365 CLI scripts'
 
-- job: O365_Scripts
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  steps:
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/devops/office365-CLI-deploy-app.sh' 
-        artifactName: 'Office365CLIReleaseScripts' 
-      displayName: 'Publish o365 CLI scripts'
+- stage: Deploy
+  displayName: Deploy
+
+  jobs:
+  - deployment: DeployJob
+    displayName: Deploy Job
+    pool:
+      vmImage: Ubuntu-16.04
+    environment: staging
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Hello
