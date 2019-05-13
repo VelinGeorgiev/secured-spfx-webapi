@@ -1,0 +1,21 @@
+{
+  "@pnp/generator-spfx": {
+    "framework": "react",
+    "pnpFramework": "reactjs.plus",
+    "pnp-libraries": [],
+    "pnp-ci": [],
+    "pnp-vetting": [],
+    "spfxenv": "spo"
+  },
+  "@microsoft/generator-sharepoint": {
+    "environment": "spo",
+    "framework": "react",
+    "isCreatingSolution": true,
+    "version": "1.8.2",
+    "libraryName": "react-aadhttpclient",
+    "libraryId": "354939a7-a58e-42c0-8c00-3539a418ff4c",
+    "packageManager": "npm",
+    "isDomainIsolated": true,
+    "componentType": "webpart"
+  }
+}
