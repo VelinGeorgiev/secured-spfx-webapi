@@ -11,7 +11,7 @@ stages:
 - stage: Build
   displayName: Build
   jobs:
-  - job: API_BuildnDeploy
+  - job: API
     pool:
       vmImage: 'windows-latest'
     variables:
@@ -43,7 +43,7 @@ stages:
         artifactName: 'PnPIceCreamShopWebApi' 
       displayName: 'Publish the PnP.IceCreamShop Web API'
   
-  - job: SPFX_BuildnDeploy
+  - job: SPFx
     pool:
       vmImage: 'Ubuntu-16.04'
     steps:
@@ -76,10 +76,9 @@ stages:
 
 - stage: Deploy
   displayName: Deploy
-
   jobs:
-  - deployment: DeployJob
-    displayName: Deploy Job
+  - deployment: API
+    displayName: API
     pool:
       vmImage: Ubuntu-16.04
     environment: staging
@@ -87,4 +86,30 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: echo Hello
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: PnPIceCreamShop '
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (86cecb91-3226-4104-8fbd-f08b4262fb4a)'
+              WebAppName: PnPIceCreamShop
+              packageForLinux: '$(System.DefaultWorkingDirectory)/drop/PnPIceCreamShopWebApi/PnP.IceCreamShop.zip'
+  - deployment: SPFx
+    displayName: SPFx
+    pool:
+      vmImage: Ubuntu-16.04
+    environment: staging
+    strategy:
+      runOnce:
+        deploy:
+          #Your build pipeline references a secret variable named ‘pass’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+          variables:
+            site: 'https://velingeorgiev.sharepoint.com/sites/aad'
+            email: 'me@velingeorgiev.onmicrosoft.com'
+            scope: 'sitecollection'
+
+          steps:
+          - task: Bash@3
+            displayName: 'Bash Script'
+            inputs:
+              targetType: filePath
+              filePath: './$(System.DefaultWorkingDirectory)/drop/Office365CLIReleaseScripts/office365-CLI-deploy-app.sh'
+              arguments: '$(site) $(email) $(pass) $(scope)'
