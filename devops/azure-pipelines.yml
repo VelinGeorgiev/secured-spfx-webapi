@@ -50,13 +50,14 @@ jobs:
       displayName: 'Install Node.js'
 
     - script: |
-        npm i
+        cd spfx
+        npm ci
         gulp bundle --ship
         gulp package-solution --ship
       displayName: 'Build DEV package'
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/sharepoint/solution/react-aadhttpclient.sppkg' 
+        pathtoPublish: '$(Build.SourcesDirectory)/spfx/sharepoint/solution/react-aadhttpclient.sppkg' 
         artifactName: 'PnPIceCreamShopSPPKG' 
       displayName: 'Publish SPFx solution'
 
