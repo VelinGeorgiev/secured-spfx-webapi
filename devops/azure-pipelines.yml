@@ -56,6 +56,6 @@ jobs:
       displayName: 'Build DEV package'
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/sharepoint/solution/react-app-settings.sppkg' 
+        pathtoPublish: '$(Build.SourcesDirectory)/sharepoint/solution/react-aadhttpclient.sppkg' 
         artifactName: 'PnPIceCreamShopWebPart' 
       displayName: 'Publish SPFx solution'
