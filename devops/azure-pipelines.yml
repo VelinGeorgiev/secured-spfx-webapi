@@ -2,11 +2,9 @@
 # Build and test ASP.NET projects.
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
 - master
 - dotnetapi
-
 stages:
 - stage: Build
   displayName: Build
@@ -20,29 +18,24 @@ stages:
       buildConfiguration: 'Release'
     steps:
     - task: NuGetToolInstaller@0
-  
     - task: NuGetCommand@2
       inputs:
         restoreSolution: '$(solution)'
-  
     - task: VSBuild@1
       inputs:
         solution: '$(solution)'
         msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)/api"'
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-  
     - task: VSTest@2
       inputs:
         platform: '$(buildPlatform)'
         configuration: '$(buildConfiguration)'
-  
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(build.artifactStagingDirectory)/api/PnP.IceCreamShop.zip' 
         artifactName: 'drop' 
       displayName: 'Publish the PnP.IceCreamShop Web API'
-  
   - job: SPFx
     pool:
       vmImage: 'Ubuntu-16.04'
@@ -51,7 +44,6 @@ stages:
         inputs:
           versionSpec: '8.x'
         displayName: 'Install Node.js'
-  
       - script: |
           cd spfx
           npm ci
@@ -63,7 +55,6 @@ stages:
           pathtoPublish: '$(Build.SourcesDirectory)/spfx/sharepoint/solution/react-aadhttpclient.sppkg' 
           artifactName: 'drop' 
         displayName: 'Publish SPFx solution'
-  
   - job: O365_Scripts
     pool:
       vmImage: 'Ubuntu-16.04'
@@ -73,7 +64,6 @@ stages:
           pathtoPublish: '$(Build.SourcesDirectory)/devops/office365-CLI-deploy-app.sh' 
           artifactName: 'drop' 
         displayName: 'Publish o365 CLI scripts'
-
 - stage: Deploy
   displayName: Deploy
   jobs:
