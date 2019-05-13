@@ -57,7 +57,7 @@ jobs:
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/sharepoint/solution/react-aadhttpclient.sppkg' 
-        artifactName: 'PnPIceCreamShopWebPart' 
+        artifactName: 'PnPIceCreamShopSPPKG' 
       displayName: 'Publish SPFx solution'
 
 - job: O365_Scripts
@@ -66,6 +66,6 @@ jobs:
   steps:
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(Build.SourcesDirectory)/devops/release/' 
+        pathtoPublish: '$(Build.SourcesDirectory)/devops/office365-CLI-deploy-app.sh' 
         artifactName: 'Release-scripts' 
-      displayName: 'Publish release scripts'
+      displayName: 'Publish o365 CLI scripts'
