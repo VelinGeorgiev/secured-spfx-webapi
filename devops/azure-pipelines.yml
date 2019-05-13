@@ -68,5 +68,5 @@ jobs:
     - task: PublishBuildArtifacts@1
       inputs:
         pathtoPublish: '$(Build.SourcesDirectory)/devops/office365-CLI-deploy-app.sh' 
-        artifactName: 'Release-scripts' 
+        artifactName: 'Office365CLIReleaseScripts' 
       displayName: 'Publish o365 CLI scripts'
