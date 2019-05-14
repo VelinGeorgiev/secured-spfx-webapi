@@ -10,6 +10,10 @@
       {
         "resource": "PnP.IceCreamShop",
         "scope": "Flavours.List"
+      },
+      {
+        "resource": "PnP.IceCreamShop2",
+        "scope": "Flavours.List"
       }
     ]
   },

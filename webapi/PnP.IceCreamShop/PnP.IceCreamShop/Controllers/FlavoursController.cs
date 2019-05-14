@@ -8,6 +8,7 @@ using System.Web.Http;
 
 namespace PnP.IceCreamShop.Controllers
 {
+    [Authorize]
     public class FlavoursController : ApiController
     {
         public IList<IceCream> Get()
