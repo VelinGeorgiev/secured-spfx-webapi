@@ -81,7 +81,7 @@ stages:
               azureSubscription: 'Visual Studio Enterprise (86cecb91-3226-4104-8fbd-f08b4262fb4a)'
               appType: 'webApp'
               WebAppName: 'PnPIceCreamShop2'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              packageForLinux: '../drop/PnP.IceCreamShop.zip'
   - deployment: SPFx
     displayName: SPFx
     pool:
