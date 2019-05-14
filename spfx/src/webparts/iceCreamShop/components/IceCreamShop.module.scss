@@ -23,6 +23,11 @@
   }
 
   .title {
+    @include ms-font-xxl;
+    @include ms-fontColor-white;
+  }
+
+  .item {
     @include ms-font-xl;
     @include ms-fontColor-white;
   }

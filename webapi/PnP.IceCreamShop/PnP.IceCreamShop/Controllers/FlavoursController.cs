@@ -14,8 +14,8 @@ namespace PnP.IceCreamShop.Controllers
         {
             return new List<IceCream>()
             {
-                new IceCream() { Favour = "Vanilla", Price = 9.00m },
-                new IceCream() { Favour = "Chocolate", Price = 10.99m }
+                new IceCream() { Favour = "Vanilla", Price = 4.99m },
+                new IceCream() { Favour = "Chocolate", Price = 5.99m }
             };
         }
     }
