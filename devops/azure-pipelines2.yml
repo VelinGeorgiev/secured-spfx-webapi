@@ -1,0 +1,103 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+trigger:
+- dotnetapi2
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: API
+    pool:
+      vmImage: 'windows-latest'
+    variables:
+      solution: '**/*.sln'
+      buildPlatform: 'Any CPU'
+      buildConfiguration: 'Release'
+    steps:
+    - task: NuGetToolInstaller@0
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)/api"'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+    - task: VSTest@2
+      inputs:
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(build.artifactStagingDirectory)/api/PnP.IceCreamShop.zip' 
+        artifactName: 'drop' 
+      displayName: 'Publish the PnP.IceCreamShop Web API'
+  - job: SPFx
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '8.x'
+        displayName: 'Install Node.js'
+      - script: |
+          cd spfx
+          npm ci
+          gulp bundle --ship
+          gulp package-solution --ship
+        displayName: 'Build DEV package'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(Build.SourcesDirectory)/spfx/sharepoint/solution/react-aadhttpclient.sppkg' 
+          artifactName: 'drop' 
+        displayName: 'Publish SPFx solution'
+  - job: O365_Scripts
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(Build.SourcesDirectory)/devops/office365-CLI-deploy-app.sh' 
+          artifactName: 'drop' 
+        displayName: 'Publish o365 CLI scripts'
+- stage: Deploy
+  displayName: Deploy
+  jobs:
+  - deployment: API
+    displayName: API
+    pool:
+      vmImage: Ubuntu-16.04
+    environment: staging
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: PnPIceCreamShop '
+            inputs:
+              azureSubscription: 'Visual Studio Enterprise (86cecb91-3226-4104-8fbd-f08b4262fb4a)'
+              WebAppName: PnPIceCreamShop2
+              packageForLinux: '../drop/PnP.IceCreamShop.zip'
+  - deployment: SPFx
+    displayName: SPFx
+    pool:
+      vmImage: Ubuntu-16.04
+    environment: staging
+    #Your build pipeline references a secret variable named ‘pass’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+    variables:
+      site: 'https://velingeorgiev.sharepoint.com/sites/aad'
+      email: 'me@velingeorgiev.onmicrosoft.com'
+      scope: 'sitecollection'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            displayName: 'Bash Script'
+            inputs:
+              targetType: filePath
+              filePath: '../drop/office365-CLI-deploy-app.sh'
+              arguments: '$(site) $(email) $(pass) $(scope)'
