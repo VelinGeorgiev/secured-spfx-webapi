@@ -15,10 +15,10 @@ export default class IceCreamShop extends React.Component<IIceCreamShopProps, II
   public componentDidMount(): void {
 
     this.props.aadHttpClientFactory
-    .getClient('8fe9d9f0-1040-414b-94a4-b96cbb493f9e')
+    .getClient('53dabdc1-247c-43c4-86fc-5a005b850df5')
     .then((client: AadHttpClient): Promise<HttpClientResponse> => {
 
-      return client.get('https://pnpicecreamshop.azurewebsites.net/api/flavours', AadHttpClient.configurations.v1);
+      return client.get('https://pnpicecreamshop2.azurewebsites.net/api/flavours', AadHttpClient.configurations.v1);
     })
     .then((response: HttpClientResponse): Promise<IceCream[]> => {
 
