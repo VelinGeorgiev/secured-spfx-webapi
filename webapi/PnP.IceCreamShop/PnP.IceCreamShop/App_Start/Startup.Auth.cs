@@ -21,15 +21,15 @@ namespace SharePoint.PnP.SampleRESTAPI
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
 
-            app.UseWindowsAzureActiveDirectoryBearerAuthentication(
-                new WindowsAzureActiveDirectoryBearerAuthenticationOptions
-                {
-                    Tenant = ConfigurationManager.AppSettings["Domain"],
-                    TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidAudience = ConfigurationManager.AppSettings["Audience"]
-                    },
-                });
+            //app.UseWindowsAzureActiveDirectoryBearerAuthentication(
+            //    new WindowsAzureActiveDirectoryBearerAuthenticationOptions
+            //    {
+            //        Tenant = ConfigurationManager.AppSettings["Domain"],
+            //        TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidAudience = ConfigurationManager.AppSettings["Audience"]
+            //        },
+            //    });
         }
     }
 }
