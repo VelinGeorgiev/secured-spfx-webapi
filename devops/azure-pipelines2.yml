@@ -76,11 +76,12 @@ stages:
         deploy:
           steps:
           - task: AzureRmWebAppDeployment@4
-            displayName: 'Azure App Service Deploy: PnPIceCreamShop '
             inputs:
+              ConnectionType: 'AzureRM'
               azureSubscription: 'Visual Studio Enterprise (86cecb91-3226-4104-8fbd-f08b4262fb4a)'
-              WebAppName: PnPIceCreamShop2
-              packageForLinux: '../drop/PnP.IceCreamShop.zip'
+              appType: 'webApp'
+              WebAppName: 'PnPIceCreamShop2'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
   - deployment: SPFx
     displayName: SPFx
     pool:
