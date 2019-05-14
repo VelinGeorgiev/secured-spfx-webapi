@@ -18,10 +18,10 @@ export interface IIceCreamShopWebPartProps {
 export default class IceCreamShopWebPart extends BaseClientSideWebPart<IIceCreamShopWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IIceCreamShopProps > = React.createElement(
+    const element: React.ReactElement<IIceCreamShopProps> = React.createElement(
       IceCreamShop,
       {
-        description: this.properties.description
+        aadHttpClientFactory: this.context.aadHttpClientFactory
       }
     );
 

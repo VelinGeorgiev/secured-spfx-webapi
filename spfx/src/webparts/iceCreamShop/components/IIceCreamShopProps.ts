@@ -1,3 +1,5 @@
+import { AadHttpClientFactory } from "@microsoft/sp-http";
+
 export interface IIceCreamShopProps {
-  description: string;
+  aadHttpClientFactory: AadHttpClientFactory;
 }
