@@ -7,11 +7,7 @@
   },
   "scripts": {
     "build": "gulp bundle",
-    "clean": "gulp clean",
-    "preversion": "node ./tools/pre-version.js",
-    "postversion": "gulp dist",
-    "test": "./node_modules/.bin/jest --config ./config/jest.config.json",
-    "test:watch": "./node_modules/.bin/jest --config ./config/jest.config.json --watchAll"
+    "clean": "gulp clean"
   },
   "dependencies": {
     "@microsoft/sp-core-library": "1.8.2",

@@ -16,7 +16,3 @@ spo site get -u https://velingeorgiev.sharepoint.com/sites/aad
 spo site add --type CommunicationSite --url https://velingeorgiev.sharepoint.com/sites/aad --title "PnP Ice Cream Shop"
 
 spo site appcatalog add --url https://velingeorgiev.sharepoint.com/sites/aad
-
-
-Setup az  with commander bash
-ln -s "/c/Program Files (x86)/Microsoft SDKs/Azure/CLI2/wbin/az.cmd" "$SYSTEMROOT\az"
