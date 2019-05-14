@@ -32,7 +32,7 @@ stages:
         configuration: '$(buildConfiguration)'
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: '$(build.artifactStagingDirectory)/**/PnP.IceCreamShop.zip' 
+        pathtoPublish: './**/PnP.IceCreamShop.zip' 
         artifactName: 'drop' 
       displayName: 'Publish the PnP.IceCreamShop Web API'
   - job: SPFx
@@ -76,11 +76,10 @@ stages:
         deploy:
           steps:
           - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service Deploy: PnPIceCreamShop '
             inputs:
-              ConnectionType: 'AzureRM'
               azureSubscription: 'Visual Studio Enterprise (86cecb91-3226-4104-8fbd-f08b4262fb4a)'
-              appType: 'webApp'
-              WebAppName: 'PnPIceCreamShop2'
+              WebAppName: PnPIceCreamShop2
               packageForLinux: '../drop/PnP.IceCreamShop.zip'
   - deployment: SPFx
     displayName: SPFx
