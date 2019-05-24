@@ -12,24 +12,24 @@ using Microsoft.Owin.Security.ActiveDirectory;
 using System.IdentityModel.Tokens;
 using Microsoft.IdentityModel.Tokens;
 
-namespace SharePoint.PnP.SampleRESTAPI
+namespace PnP.IceCreamShop
 {
     public partial class Startup
     {
         public void ConfigureAuth(IAppBuilder app)
         {
-            app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            app.UseWindowsAzureActiveDirectoryBearerAuthentication(
+                new WindowsAzureActiveDirectoryBearerAuthenticationOptions
+                {
+                    Tenant = ConfigurationManager.AppSettings["Domain"],
+                    TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidAudience = ConfigurationManager.AppSettings["Audience"]
+                    },
+                });
 
-            //app.UseWindowsAzureActiveDirectoryBearerAuthentication(
-            //    new WindowsAzureActiveDirectoryBearerAuthenticationOptions
-            //    {
-            //        Tenant = ConfigurationManager.AppSettings["Domain"],
-            //        TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidAudience = ConfigurationManager.AppSettings["Audience"]
-            //        },
-            //    });
+            //app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions());
         }
     }
 }

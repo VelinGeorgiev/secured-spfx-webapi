@@ -5,10 +5,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace PnP.IceCreamShop.Controllers
 {
     [Authorize]
+    [EnableCors(origins: "https://velingeorgiev.sharepoint.com", headers: "*", methods: "*")]
     public class FlavoursController : ApiController
     {
         public IList<IceCream> Get()
