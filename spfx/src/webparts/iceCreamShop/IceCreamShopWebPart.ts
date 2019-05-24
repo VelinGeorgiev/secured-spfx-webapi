@@ -21,7 +21,7 @@ export default class IceCreamShopWebPart extends BaseClientSideWebPart<IIceCream
     const element: React.ReactElement<IIceCreamShopProps> = React.createElement(
       IceCreamShop,
       {
-        aadHttpClientFactory: this.context.aadHttpClientFactory
+        description: this.properties.description
       }
     );
 

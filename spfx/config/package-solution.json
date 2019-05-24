@@ -5,13 +5,7 @@
     "id": "354939a7-a58e-42c0-8c00-3539a418ff4c",
     "version": "1.0.0.0",
     "includeClientSideAssets": true,
-    "skipFeatureDeployment": true,
-    "webApiPermissionRequests": [
-      {
-        "resource": "PnP.IceCreamShop",
-        "scope": "Flavours.List"
-      }
-    ]
+    "skipFeatureDeployment": true
   },
   "paths": {
     "zippedPackage": "solution/react-aadhttpclient.sppkg"

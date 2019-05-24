@@ -1,0 +1,109 @@
+{
+	"AadHttpClient get": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "aadget",
+		"body": [
+			"this.props.aadHttpClientFactory",
+			".getClient('8fe9d9f0-1040-414b-94a4-b96cbb493f9e')",
+			".then((client: AadHttpClient): Promise<HttpClientResponse> => {",
+			"",
+			"  return client.get('https://pnpicecreamshop.azurewebsites.net/api/flavours', AadHttpClient.configurations.v1);",
+			"})",
+			".then((response: HttpClientResponse): Promise<IceCream[]> => {",
+			"",
+			"  return response.json();",
+			"})",
+			".then((jsonResult: IceCream[]): void => {",
+			"",
+			"  this.setState({ iceCreamList: jsonResult });",
+			"})",
+			".catch(err => console.log(err));"
+		],
+		"description": "AadHttpClient get"
+	},
+	"AadHttpClient props": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "aadprops",
+		"body": [
+			"import { AadHttpClientFactory } from \"@microsoft/sp-http\";",
+			"",
+			"export interface IIceCreamShopProps {",
+			"  aadHttpClientFactory: AadHttpClientFactory;",
+			"}",
+		],
+		"description": "AadHttpClient props"
+	},
+	"AadHttpClient state": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "aadstate",
+		"body": [
+			"import { IceCream } from \"./IceCream\";",
+			"",
+			"export interface IIceCreamShopState {",
+			"  iceCreamList: IceCream[];",
+			"}",
+		],
+		"description": "AadHttpClient state"
+	},
+	"AadHttpClient constr": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "aadconstr",
+		"body": [
+			"constructor(props: IIceCreamShopProps) {",
+			"    super(props);",
+			"    this.state = { iceCreamList: [] };",
+			"  }",
+			"",
+			"public componentDidMount(): void {",
+			"",
+			"}"
+		],
+		"description": "AadHttpClient constr"
+	},
+	"AadHttpClient show list": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "aadmap",
+		"body": [
+			"{",
+			"  this.state.iceCreamList.map((iceCream: IceCream) => {",
+			"    return <div className={styles.item}>",
+			"        {iceCream.Favour} ice cream for just {iceCream.Price}",
+			"      </div>;",
+			"    })",
+			" }"
+		],
+		"description": "AadHttpClient show list"
+	},
+	"AadHttpClient model": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "aadmodel",
+		"body": [
+			"export interface IceCream {",
+			"  Favour: string;",
+			"  Price: number;",
+			"}"
+		],
+		"description": "AadHttpClient model"
+	},
+	"AadHttpClient inject": {
+		"scope": "javascript,typescript,typescriptreact",
+		"prefix": "aadinject",
+		"body": [
+			"  aadHttpClientFactory: this.context.aadHttpClientFactory",
+		],
+		"description": "AadHttpClient inject"
+	},
+	"AadHttpClient grant": {
+		"scope": "json",
+		"prefix": "aadgrant",
+		"body": [
+			"\"webApiPermissionRequests\": [",
+			"  {",
+			"    \"resource\": \"PnP.IceCreamShop\",",
+			"    \"scope\": \"Flavours.List\"",
+			"  }",
+			"]"
+		],
+		"description": "AadHttpClient grant"
+	},
+}
