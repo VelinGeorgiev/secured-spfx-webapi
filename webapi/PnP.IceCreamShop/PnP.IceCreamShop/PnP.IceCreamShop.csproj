@@ -141,8 +141,6 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\PnPIceCreamShop - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PnPIceCreamShop2 - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\PnPIceCreamShop3 - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\PnPIceCreamShop4 - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

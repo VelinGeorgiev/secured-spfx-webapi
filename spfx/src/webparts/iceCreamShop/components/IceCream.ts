@@ -1,4 +1,4 @@
 export interface IceCream {
-  Favour: string;
+  Flavour: string;
   Price: number;
 }

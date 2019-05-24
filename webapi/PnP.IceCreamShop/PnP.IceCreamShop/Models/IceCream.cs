@@ -2,7 +2,7 @@
 {
     public class IceCream
     {
-        public string Favour { get; set; }
+        public string Flavour { get; set; }
         public decimal Price { get; set; }
     }
 }
