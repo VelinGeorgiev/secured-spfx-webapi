@@ -1,8 +1,18 @@
 import * as React from 'react';
 import styles from './IceCreamShop.module.scss';
 import { IIceCreamShopProps } from './IIceCreamShopProps';
+import { IIceCreamShopState } from './IIceCreamShopState';
 
-export default class IceCreamShop extends React.Component<IIceCreamShopProps, {}> {
+export default class IceCreamShop extends React.Component<IIceCreamShopProps, IIceCreamShopState> {
+
+  constructor(props: IIceCreamShopProps) {
+      super(props);
+      this.state = { iceCreamList: [] };
+    }
+  
+  public componentDidMount(): void {
+  
+  }
 
   public render(): React.ReactElement<IIceCreamShopProps> {
     return (
