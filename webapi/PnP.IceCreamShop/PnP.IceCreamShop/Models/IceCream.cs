@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace PnP.IceCreamShop.Models
+﻿namespace PnP.IceCreamShop.Models
 {
     public class IceCream
     {

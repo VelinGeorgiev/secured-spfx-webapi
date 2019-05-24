@@ -38,7 +38,7 @@ export default class IceCreamShop extends React.Component<IIceCreamShopProps, II
           <div className={styles.row}>
             <span className={styles.title}>Welcome to the PnP Ice Cream Shop!</span>
             {
-              this.state.iceCreamList.map(iceCream => {
+              this.state.iceCreamList.map((iceCream: IceCream) => {
                 return <div className={styles.item}>
                           {iceCream.Favour} ice cream for just {iceCream.Price}
                         </div>;
